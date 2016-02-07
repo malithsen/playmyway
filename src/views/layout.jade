@@ -1,0 +1,17 @@
+!!!5
+html(ng-app="qApp")
+  head
+    meta(name="fragment", content="!")
+    title #{title}
+
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+    script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js")
+    script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.min.js")
+
+
+  body
+    section(ng-view)
+ 
+    script(src="/js/main.js")
+
