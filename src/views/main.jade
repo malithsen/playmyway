@@ -1,2 +1,7 @@
 div(ng-repeat="song in songs")
-   {{song.name}}
+   .song
+     {{song.votes || 0}} {{song.name}}
+
+     .vote-btn(ng-click="voteup(song._id)")
+       | vote up
+

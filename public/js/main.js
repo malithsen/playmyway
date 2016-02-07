@@ -24,6 +24,12 @@ qApp.controller('RootCtrl', ['$scope', '$http', function($scope, $http) {
       $scope.songs = data;
     });
   };
+
+  $scope.voteup = function(id) {
+    $http.get('upvote/' + id).success(function(data) {
+      console.log(data);
+    });
+  };
   $scope.loadSongs();
 }]);
 

@@ -30,7 +30,7 @@ MongoCon.prototype.init = function() {
 };
 
 MongoCon.prototype.getSongs = function(cb) {
-  this.Song.find({}, {}, {}, function(err, res) {
+  this.Song.find({}, {}, {sort: {'votes': -1}}, function(err, res) {
     if (err){
       cb(err);
     } else {
