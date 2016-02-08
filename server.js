@@ -46,12 +46,10 @@ function playStream(input, options) {
   speaker.on('finish', function() {
     if (options.loop) {
       console.log('loop');
-        // i want to restart here
       start();
     }
   });
   function start() {
-    //input.pos = 0;
     console.dir(input);
     v.pipe(speaker);
     decoder.pipe(v);
@@ -97,7 +95,6 @@ app.get('/play', function(req, res) {
 app.get('/reload', function(req, res) {
   console.log("Reload");
   fs.readdir(PATH, function(err, items) {
-    // console.log(items);
     res.json(items);
  
     for (var i=0; i<items.length; i++) {
