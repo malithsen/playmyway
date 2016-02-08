@@ -12,8 +12,8 @@ change PATH variable in server.js to point to your songs directory
 ##### immediately
 
 ###### Frontend
-* Add styles
-* Add a button to vote up (Currently clicking on 'vote up' text works)
+* ~~Add styles~~
+* ~~Add a button to vote up (Currently clicking on 'vote up' text works)~~
 * Highlight the song currently being played
 * Design another view for the admin. This should give the ability to control the player (play, pause, stop etc)
 * Limit access to admin view (password maybe?)
