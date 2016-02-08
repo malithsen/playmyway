@@ -1,7 +1,12 @@
-div(ng-repeat="song in songs")
-   .song
-     {{song.votes || 0}} {{song.name}}
-
-     .vote-btn(ng-click="voteup(song._id)")
-       | vote up
+.container
+  .row
+    .col.s10.offset-s1
+      div(ng-repeat="song in songs")
+        .col.s11
+          .card-panel.blue
+            .white-text
+              {{song.votes || 0}} {{song.name}}
+        .col.s1
+          a.btn-floating.btn-large.waves-effect.waves-light.teal.vote-btn(ng-click="voteup(song._id)")
+            i.material-icons present_to_all
 
