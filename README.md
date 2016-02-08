@@ -1,4 +1,4 @@
-Quaker provides a way to create playlists based on votes. Currently it is work in progress and far from usable.
+Vote2play provides a way to create playlists based on votes. Currently it is work in progress and far from usable.
 
 ## Development
 
