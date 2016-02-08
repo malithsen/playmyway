@@ -24,8 +24,6 @@ var PATH = '/media/stuff/songs';
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
-// app.use(express.logger());
-// app.use(express.compress());
 
 app.set('views', __dirname + '/src/views');
 app.set('view engine', 'jade');
@@ -36,9 +34,6 @@ app.use(express.static(__dirname + '/public'));
 
 var mongocon = new MongoCon(config.mongo.uri);
 mongocon.init();
-
-// Minimum time between two database requests
-// var TIMEOUT = 5 * 1000; // 5 seconds
 
 function playStream(input, options) {
   var decoder = lame.Decoder();
@@ -98,9 +93,6 @@ app.get('/play', function(req, res) {
   mongocon.playcur(cb);
 
 });
-// app.get('/', function(req, res) {
-//   console.log("Root");
-// });
 
 app.get('/reload', function(req, res) {
   console.log("Reload");
