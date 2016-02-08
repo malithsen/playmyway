@@ -3,9 +3,11 @@
     .col.s10.offset-s1
       div(ng-repeat="song in songs")
         .col.s11
-          .card-panel.blue
+          .vote-count.purple-text.text-lighten-1
+            {{song.votes || 0}}
+          .card-panel.blue.song-card
             .white-text
-              {{song.votes || 0}} {{song.name}}
+              {{song.name}}
         .col.s1
           a.btn-floating.btn-large.waves-effect.waves-light.teal.vote-btn(ng-click="voteup(song._id)")
             i.material-icons present_to_all
