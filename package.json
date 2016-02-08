@@ -1,7 +1,7 @@
 {
-  "name": "Quaker",
+  "name": "Vote2play",
   "version": "0.0.1",
-  "description": "Vote to play",
+  "description": "Change playlist based on votes",
   "main": "server.js",
   "dependencies": {
     "express": "4.x",
