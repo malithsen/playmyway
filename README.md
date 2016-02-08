@@ -21,6 +21,7 @@ change PATH variable in server.js to point to your songs directory
 ###### Backend
 * Sort songs by votes. If multiple songs have the same votes, song last voted should be the last
 * Change songs directory, better if we can add multiple directories and individual songs.
+* Automatically move to the next song the playlist once the current one is over.
 
 ##### Not so immediately
 Well let's save that for later :P
