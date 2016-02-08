@@ -19,7 +19,7 @@ var audioOptions = {
     mode: lame.STEREO
 };
 
-var PATH = '/media/stuff/songs';
+var PATH = '/media/stuff/songs/';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -106,7 +106,7 @@ app.get('/reload', function(req, res) {
 
 app.get('/save', function(req, res){
   console.log("save song");
-  mongocon.saveSong('test.mp3', function(){console.log("callback fn");});
+  mongocon.saveSong('test.mp3');
 });
 
 app.get('/views/:v', function(req, res) {

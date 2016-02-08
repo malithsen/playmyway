@@ -58,7 +58,7 @@ MongoCon.prototype.playcur = function(cb) {
   });
 }
 
-MongoCon.prototype.saveSong = function(name, cb){
+MongoCon.prototype.saveSong = function(name){
 
   var newSong = new this.Song({
     votes: 0,
