@@ -6,6 +6,8 @@ Vote2play provides a way to create playlists based on votes. Currently it is wor
 
 change PATH variable in server.js to point to your songs directory
 
+for Debian/Ubuntu users install ALSA headers if not already installed:
+sudo apt-get install libasound2-dev
 
 #### What needs to be done 
 
