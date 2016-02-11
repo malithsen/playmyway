@@ -98,6 +98,7 @@ app.get('/play', function(req, res) {
   res.redirect('/');  
 }); 
 
+
 app.get('/next', function(req, res){
   console.log('Switching to the next song...');
 
@@ -128,7 +129,9 @@ app.get('/reload', function(req, res) {
     res.json(items);
 
     for (var i=0; i<items.length; i++) {
+
       if (path.extname(items[i]) === '.mp3') {
+
         console.log(items[i]);
         mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
       };
