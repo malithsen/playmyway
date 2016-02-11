@@ -6,17 +6,11 @@ var express = require('express'),
      _ = require('lodash'),
     async = require('async'),
     Player = require('player'),
-
     fs = require('fs'),
     path = require('path');
 
 var PATH = ''; // When comitting keep this empty.
 var player, currSong;
-
-player = new Player([]);
-    
-var PATH = '/home/hasa93/Songs/';
-var player, currSong = {};
 
 player = new Player([]);
 
@@ -160,6 +154,7 @@ app.get('/', function(req, res) {
 });
 
 var port = process.env.PORT || 8080;
-  app.listen(port, function() {
+
+app.listen(port, function(){
   console.log("Listening on port " + port);
 });
