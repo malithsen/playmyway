@@ -71,5 +71,13 @@ MongoCon.prototype.saveSong = function(name){
     console.log("New song saved", name);
   })
 };
+
+MongoCon.prototype.resetVotes = function(name){
+  this.Song.update({'name' : name}, {$set: {'votes': 0}}, function(err,res){
+    if (err) throw err;
+    console.log("Vote reset");
+  });
+}
+
 module.exports = MongoCon;
 
