@@ -8,7 +8,7 @@ var express = require('express'),
     Player = require('player'),
     fs = require('fs');
 
-var PATH = '/media/stuff/songs/'; // When comitting keep this empty.
+var PATH = ''; // When comitting keep this empty.
 var player;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -44,33 +44,36 @@ app.get('/upvote/:id', function(req, res) {
 app.get('/play', function(req, res) {
   console.log("play");
 
-  var cb = function(err, songs){
-    if(err) console.log(err);
+  mongocon.getSongs(function(err, songs){
+      if(err) console.log(err);
+    
+      var paths = []
 
-    var paths = []
+      for(var i = 0; i < songs.length; i++){
+        paths.push(songs[i].name)
+      }
+      
+      console.log(paths);
 
-    for(var i = 0; i < songs.length; i++){
-      paths.push(songs[i].name)
-    }
+      player = new Player(paths)
+               .on('playing', function(song){
+                 console.log(song);
+                 console.log('Playing ' + song._name); 
+                 mongocon.resetVotes(song.src); 
+                })
+               .on('playend', function(song){
+                  console.log('Switching...');
+                })
+               .on('error', function(err){
+                 console.log(err);
+                })
+               .play();    
 
-    console.log(paths);
 
-    player = new Player(paths)
-      .on('playing', function(song){
-        console.log('Playing ' + song._name);
-        res.end();
-      })
-      .on('playend', function(song){
-        console.log('Finished playlist!')
-      })
-      .on('error', function(err){
-        console.log(err);
-        res.status(500).send('Oops!');
-      })
-      .play();
-  }
-  mongocon.getSongs(cb);
 
+      res.redirect('/');
+  });
+  
 });
 
 app.get('/next', function(req, res){
@@ -83,6 +86,17 @@ app.get('/next', function(req, res){
   }
 
   player.next();
+
+  res.redirect('/');
+
+});
+
+app.get('/stop', function(req, res){
+  console.log('Stopping current song...')
+  player.stop();
+
+  res.redirect('/');
+
 });
 
 app.get('/reload', function(req, res) {
@@ -106,7 +120,7 @@ app.get('/views/:v', function(req, res) {
   res.render(req.params.v);
 });
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
   console.log("calling layout");
   res.render('layout', {
     title: 'Quaker',
