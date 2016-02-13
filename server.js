@@ -6,7 +6,8 @@ var express = require('express'),
      _ = require('lodash'),
     async = require('async'),
     Player = require('player'),
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
 var PATH = ''; // When comitting keep this empty.
 var player;
@@ -105,8 +106,10 @@ app.get('/reload', function(req, res) {
     res.json(items);
 
     for (var i=0; i<items.length; i++) {
+      if (path.extname(items[i]) === '.mp3') {
         console.log(items[i]);
         mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
+      };
     }
   });
 });

@@ -14,7 +14,8 @@
     "pcm-volume": "0.0.1",
     "player": "^0.6.1",
     "serve-favicon": "~2.0.1",
-    "speaker": "^0.2.5"
+    "speaker": "^0.2.5",
+    "path": "0.12.x"
   },
   "engines": {
     "node": "0.10.x",
