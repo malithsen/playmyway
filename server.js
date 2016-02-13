@@ -128,10 +128,8 @@ app.get('/reload', function(req, res) {
   fs.readdir(PATH, function(err, items) {
     res.json(items);
 
-    for (var i=0; i<items.length; i++) {
-
+    for (var i=0; i<items.length; i++) {      
       if (path.extname(items[i]) === '.mp3') {
-
         console.log(items[i]);
         mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
       };
