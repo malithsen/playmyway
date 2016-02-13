@@ -1,14 +1,15 @@
 'use strict';
 
-var express = require('express'),    
+var express = require('express'),
     config = require('./config'),
     MongoCon = require('./MongoCon'),
      _ = require('lodash'),
     async = require('async'),
     Player = require('player'),
-    fs = require('fs');
-    
-var PATH = '/home/hasa93/Songs/';
+    fs = require('fs'),
+    path = require('path');
+
+var PATH = ''; // When comitting keep this empty.
 var player;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -24,7 +25,6 @@ app.use(express.static(__dirname + '/public'));
 
 var mongocon = new MongoCon(config.mongo.uri);
 mongocon.init();
-
 
 app.get('/songs', function(req, res) {
   var cb = function(err, data) {
@@ -75,12 +75,12 @@ app.get('/play', function(req, res) {
       res.redirect('/');
   });
   
-}); 
+});
 
 app.get('/next', function(req, res){
   console.log('Switching to the next song...');
 
-  if(typeof player === "undefined") 
+  if(typeof player === "undefined")
   {
     res.send("No player instance detected!");
     return;
@@ -104,10 +104,12 @@ app.get('/reload', function(req, res) {
   console.log("Reload");
   fs.readdir(PATH, function(err, items) {
     res.json(items);
- 
+
     for (var i=0; i<items.length; i++) {
-        console.log(items[i]);        
+      if (path.extname(items[i]) === '.mp3') {
+        console.log(items[i]);
         mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
+      };
     }
   });
 });
@@ -126,7 +128,7 @@ app.get('/', function(req, res) {
   res.render('layout', {
     title: 'Quaker',
     env: process.env.NODE_ENV
-  }); 
+  });
 
 });
 
