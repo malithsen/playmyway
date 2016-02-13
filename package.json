@@ -1,5 +1,5 @@
 {
-  "name": "Vote2play",
+  "name": "PlayMyWay",
   "version": "0.0.1",
   "description": "Change playlist based on votes",
   "main": "server.js",
