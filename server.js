@@ -126,7 +126,7 @@ app.get('/views/:v', function(req, res) {
 app.get('/', function(req, res) {
   console.log("calling layout");
   res.render('layout', {
-    title: 'Quaker',
+    title: 'PlayMyWay',
     env: process.env.NODE_ENV
   });
 
