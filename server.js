@@ -10,7 +10,7 @@ var express = require('express'),
     path = require('path');
 
 var PATH = ''; // When comitting keep this empty.
-var player;
+var player, currSong;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -40,39 +40,23 @@ app.get('/songs', function(req, res) {
 app.get('/upvote/:id', function(req, res) {
   var songId = req.params.id;
   mongocon.upvote(songId, function(){res.json({'success':'upvoted '+ songId});});
+  
+});
+
+app.get('/songs/current', function(req, res){  
+  res.json(currSong);  
 });
 
 app.get('/play', function(req, res) {
-  console.log("play");
+  console.log("playing");
 
-  mongocon.getSongs(function(err, songs){
-      if(err) console.log(err);
-    
-      var paths = []
-
-      for(var i = 0; i < songs.length; i++){
-        paths.push(songs[i].name)
-      }
-      
-      console.log(paths);
-
-      player = new Player(paths)
-               .on('playing', function(song){
-                 console.log(song);
-                 console.log('Playing ' + song._name); 
-                 mongocon.resetVotes(song.src); 
-                })
-               .on('playend', function(song){
-                  console.log('Switching...');
-                })
-               .on('error', function(err){
-                 console.log(err);
-                })
-               .play();    
-
-
-
-      res.redirect('/');
+  //stop an already plaing item
+  if(typeof player != "undefined")
+  {
+    player.stop();
+  }
+ 
+    res.redirect('/');
   });
   
 });
@@ -96,6 +80,7 @@ app.get('/stop', function(req, res){
   console.log('Stopping current song...')
   player.stop();
 
+  currSong = '';
   res.redirect('/');
 
 });
@@ -136,4 +121,3 @@ var port = process.env.PORT || 8080;
   app.listen(port, function() {
   console.log("Listening on port " + port);
 });
-
