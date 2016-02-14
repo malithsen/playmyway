@@ -6,6 +6,7 @@ var express = require('express'),
      _ = require('lodash'),
     async = require('async'),
     Player = require('player'),
+
     fs = require('fs'),
     path = require('path');
 
@@ -13,6 +14,9 @@ var PATH = ''; // When comitting keep this empty.
 var player, currSong;
 
 player = new Player([]);
+    
+var PATH = '/home/hasa93/Songs/';
+var player, currSong;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -87,12 +91,7 @@ app.get('/play', function(req, res) {
   //     for(var i = 0; i < songs.length; i++){
   //       paths.push(songs[i].name)
   //     }
-      
-  //     console.log(paths);
-
-      
-  // });
-  
+ 
   updatePlayList();
 
   res.redirect('/');  
