@@ -13,3 +13,8 @@
 .song-card {
   margin-left: 5%;
 }
+
+.song-title{
+	font-size: small;
+	font-style: italic;
+}
