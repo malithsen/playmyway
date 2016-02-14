@@ -9,7 +9,7 @@ var express = require('express'),
     fs = require('fs');
     
 var PATH = '/home/hasa93/Songs/';
-var player;
+var player, currSong;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -40,10 +40,21 @@ app.get('/songs', function(req, res) {
 app.get('/upvote/:id', function(req, res) {
   var songId = req.params.id;
   mongocon.upvote(songId, function(){res.json({'success':'upvoted '+ songId});});
+  
+});
+
+app.get('/songs/current', function(req, res){  
+  res.json(currSong);  
 });
 
 app.get('/play', function(req, res) {
-  console.log("play");
+  console.log("playing");
+
+  //stop an already plaing item
+  if(typeof player != "undefined")
+  {
+    player.stop();
+  }
 
   mongocon.getSongs(function(err, songs){
       if(err) console.log(err);
@@ -59,10 +70,12 @@ app.get('/play', function(req, res) {
       player = new Player(paths)
                .on('playing', function(song){
                  console.log(song);
-                 console.log('Playing ' + song._name); 
+                 console.log('Playing ' + song._name);
+                 currSong = song;                                   
                  mongocon.resetVotes(song.src); 
                 })
                .on('playend', function(song){
+                  currSong = ''
                   console.log('Switching...');
                 })
                .on('error', function(err){
@@ -96,6 +109,7 @@ app.get('/stop', function(req, res){
   console.log('Stopping current song...')
   player.stop();
 
+  currSong = '';
   res.redirect('/');
 
 });

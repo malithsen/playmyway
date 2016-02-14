@@ -1,4 +1,4 @@
-var qApp = angular.module('qApp', ['ngRoute']);
+ var qApp = angular.module('qApp', ['ngRoute']);
 
 qApp.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.html5Mode(true);
@@ -16,12 +16,13 @@ qApp.config(['$locationProvider', '$routeProvider', function($locationProvider, 
 }]);
 
 
-qApp.controller('RootCtrl', ['$scope', '$http', function($scope, $http) {
+qApp.controller('RootCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
 
   console.log("Root ctrl");
+  
   $scope.loadSongs = function() {
     $http.get('songs/').success(function(data) {
-      $scope.songs = data;
+      $scope.songs = data;           
     });
   };
 
@@ -31,6 +32,17 @@ qApp.controller('RootCtrl', ['$scope', '$http', function($scope, $http) {
       $scope.loadSongs();
     });
   };
+  
+  $scope.getCurrSong = function(){
+     $http.get('/songs/current').success(function(data) {
+     console.log("Retrieved current...");
+     $scope.currSong = data;
+   }); 
+  };
+  
   $scope.loadSongs();
+
+  $interval($scope.getCurrSong, 1000);
+    
 }]);
 
