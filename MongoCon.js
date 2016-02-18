@@ -79,7 +79,7 @@ MongoCon.prototype.saveSong = function(name){
     voters: [],
   });
   console.log(name, newSong);
-  this.Song.findOneAndUpdate({'name': name}, {}, {upsert: true}, function(err){
+  this.Song.findOneAndUpdate({'name': name, 'votes': 0, 'lastPlayed': 0}, {}, {upsert: true}, function(err){
     if (err) throw err;
     console.log("New song saved", name);
   })
