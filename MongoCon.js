@@ -21,6 +21,7 @@ MongoCon.prototype.init = function() {
     var songSchema = new mongoose.Schema({
       votes: { type: Number, default: 0},
       name: String,
+      path: String,
       voters: Array,
       lastPlayed: { type: Number, default: 0 }
     });
@@ -72,14 +73,9 @@ MongoCon.prototype.playcur = function(cb) {
   });
 }
 
-MongoCon.prototype.saveSong = function(name){
+MongoCon.prototype.saveSong = function(path, name){
 
-  var newSong = new this.Song({
-    name: name,
-    voters: [],
-  });
-  console.log(name, newSong);
-  this.Song.findOneAndUpdate({'name': name, 'votes': 0, 'lastPlayed': 0}, {}, {upsert: true}, function(err){
+  this.Song.findOneAndUpdate({'name': name, 'path': path, 'votes': 0, 'lastPlayed': 0}, {}, {upsert: true}, function(err){
     if (err) throw err;
     console.log("New song saved", name);
   })

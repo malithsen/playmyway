@@ -31,7 +31,7 @@ mongocon.init();
 var updatePlayList = function(){
 
   mongocon.playcur(function(err, res){
-    var path = res.name;
+    var path = res.path;
 
     player = new Player(path)
                .on('playing', function(song){
@@ -129,7 +129,8 @@ app.get('/reload', function(req, res) {
     for (var i=0; i<items.length; i++) {
       if (path.extname(items[i]) === '.mp3') {
         console.log(items[i]);
-        mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
+        var songpath = PATH+items[i];
+        mongocon.saveSong(songpath, items[i], function(){console.log("callback fn");});
       };
     }
   });
