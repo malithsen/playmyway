@@ -41,7 +41,7 @@ var updatePlayList = function(){
                  currSong = song;
                  mongocon.resetVotes(song.src);
 
-                 currSong = song; 
+                 currSong = song;
                  mongocon.resetVotes(song.src);
                 })
                .on('error', function(err){
@@ -49,7 +49,7 @@ var updatePlayList = function(){
                  console.log(err);
                  updatePlayList();
                 })
-               .play();    
+               .play();
   });
 }
 
@@ -67,11 +67,11 @@ app.get('/songs', function(req, res) {
 app.get('/upvote/:id', function(req, res) {
   var songId = req.params.id;
   mongocon.upvote(songId, function(){res.json({'success':'upvoted '+ songId});});
-  
+
 });
 
-app.get('/songs/current', function(req, res){  
-  res.json(currSong);  
+app.get('/songs/current', function(req, res){
+  res.json(currSong);
 });
 
 app.get('/play', function(req, res) {
@@ -81,11 +81,11 @@ app.get('/play', function(req, res) {
   if(typeof player != "undefined")
   {
     player.stop();
-  } 
+  }
 
   // mongocon.getSongs(function(err, songs){
   //     if(err) console.log(err);
-    
+
   //     var paths = []
 
   //     for(var i = 0; i < songs.length; i++){
@@ -95,7 +95,7 @@ app.get('/play', function(req, res) {
   updatePlayList();
 
   res.redirect('/');
-}); 
+});
 
 app.get('/next', function(req, res){
   console.log('Switching to the next song...');
@@ -126,7 +126,7 @@ app.get('/reload', function(req, res) {
   fs.readdir(PATH, function(err, items) {
     res.json(items);
 
-    for (var i=0; i<items.length; i++) {      
+    for (var i=0; i<items.length; i++) {
       if (path.extname(items[i]) === '.mp3') {
         console.log(items[i]);
         mongocon.saveSong(PATH + items[i], function(){console.log("callback fn");});
