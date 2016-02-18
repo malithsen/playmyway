@@ -9,7 +9,9 @@ var express = require('express'),
     fs = require('fs');
     
 var PATH = '/home/hasa93/Songs/';
-var player, currSong;
+var player, currSong = {};
+
+player = new Player([]);
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -25,6 +27,26 @@ app.use(express.static(__dirname + '/public'));
 var mongocon = new MongoCon(config.mongo.uri);
 mongocon.init();
 
+var updatePlayList = function(){
+
+  mongocon.playcur(function(err, res){
+    var path = res.name;
+
+    player = new Player(path)
+               .on('playing', function(song){
+                 console.log(song);
+                 console.log('Playing ' + song._name);
+                 currSong = song;                                   
+                 mongocon.resetVotes(song.src); 
+                })
+               .on('error', function(err){
+                 console.log("Pfft!");
+                 console.log(err);
+                 updatePlayList();
+                })
+               .play();    
+  });
+}
 
 app.get('/songs', function(req, res) {
   var cb = function(err, data) {
@@ -50,44 +72,23 @@ app.get('/songs/current', function(req, res){
 app.get('/play', function(req, res) {
   console.log("playing");
 
-  //stop an already plaing item
-  if(typeof player != "undefined")
-  {
-    player.stop();
-  }
-
-  mongocon.getSongs(function(err, songs){
-      if(err) console.log(err);
+  // mongocon.getSongs(function(err, songs){
+  //     if(err) console.log(err);
     
-      var paths = []
+  //     var paths = []
 
-      for(var i = 0; i < songs.length; i++){
-        paths.push(songs[i].name)
-      }
+  //     for(var i = 0; i < songs.length; i++){
+  //       paths.push(songs[i].name)
+  //     }
       
-      console.log(paths);
+  //     console.log(paths);
 
-      player = new Player(paths)
-               .on('playing', function(song){
-                 console.log(song);
-                 console.log('Playing ' + song._name);
-                 currSong = song;                                   
-                 mongocon.resetVotes(song.src); 
-                })
-               .on('playend', function(song){
-                  currSong = ''
-                  console.log('Switching...');
-                })
-               .on('error', function(err){
-                 console.log(err);
-                })
-               .play();    
-
-
-
-      res.redirect('/');
-  });
+      
+  // });
   
+  updatePlayList();
+
+  res.redirect('/');  
 }); 
 
 app.get('/next', function(req, res){
