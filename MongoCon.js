@@ -19,9 +19,10 @@ MongoCon.prototype.init = function() {
     console.log('Successfully connected to DB');
 
     var songSchema = new mongoose.Schema({
-      votes: Number,
+      votes: { type: Number, default: 0},
       name: String,
       voters: Array,
+      lastPlayed: { type: Number, default: 0 }
     });
 
     mongocon.Song = mongoose.model('colx', songSchema, 'colx');
@@ -30,7 +31,7 @@ MongoCon.prototype.init = function() {
 };
 
 MongoCon.prototype.getSongs = function(cb) {
-  this.Song.find({}, {}, {sort: {'votes': -1}}, function(err, res) {
+  this.Song.find({}, {"name" : true, "lastPlayed" : true, "votes" : true}, {sort : {"votes" : -1, "lastPlayed" : 1}},function(err, res) {
     if (err){
       cb(err);
     } else {
@@ -47,12 +48,25 @@ MongoCon.prototype.upvote = function(id, cb) {
   });
 };
 
+// MongoCon.prototype.playcur = function(cb) {
+
+//   this.Song.find({}, {'name': true}, {sort: {'votes': -1, 'lastPlayed': -1}}, function(err, res) {
+//     if (err){
+//       cb(err);
+//     } else {
+//       // console.log(res);
+//       cb(null, res);
+//     }
+//   });
+// }
+
 MongoCon.prototype.playcur = function(cb) {
-  this.Song.find({}, {'name': true}, {sort: {'votes': -1, 'limit': 1}}, function(err, res) {
+
+  this.Song.findOneAndUpdate({}, {'lastPlayed': Date.now()}, {sort: {'votes': -1, 'lastPlayed' : 1}}, function(err, res) {
     if (err){
       cb(err);
     } else {
-      // console.log(res);
+      console.log(res);
       cb(null, res);
     }
   });
@@ -61,9 +75,8 @@ MongoCon.prototype.playcur = function(cb) {
 MongoCon.prototype.saveSong = function(name){
 
   var newSong = new this.Song({
-    votes: 0,
     name: name,
-    voters: []
+    voters: [],
   });
   console.log(name, newSong);
   this.Song.findOneAndUpdate({'name': name}, {}, {upsert: true}, function(err){

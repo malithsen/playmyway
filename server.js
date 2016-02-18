@@ -12,6 +12,8 @@ var express = require('express'),
 var PATH = ''; // When comitting keep this empty.
 var player, currSong;
 
+player = new Player([]);
+
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
@@ -25,6 +27,27 @@ app.use(express.static(__dirname + '/public'));
 
 var mongocon = new MongoCon(config.mongo.uri);
 mongocon.init();
+
+var updatePlayList = function(){
+
+  mongocon.playcur(function(err, res){
+    var path = res.name;
+
+    player = new Player(path)
+               .on('playing', function(song){
+                 console.log(song);
+                 console.log('Playing ' + song._name);
+                 currSong = song;                                   
+                 mongocon.resetVotes(song.src); 
+                })
+               .on('error', function(err){
+                 console.log("Pfft!");
+                 console.log(err);
+                 updatePlayList();
+                })
+               .play();    
+  });
+}
 
 app.get('/songs', function(req, res) {
   var cb = function(err, data) {
@@ -54,12 +77,26 @@ app.get('/play', function(req, res) {
   if(typeof player != "undefined")
   {
     player.stop();
-  }
- 
-    res.redirect('/');
-  });
+  } 
+
+  // mongocon.getSongs(function(err, songs){
+  //     if(err) console.log(err);
+    
+  //     var paths = []
+
+  //     for(var i = 0; i < songs.length; i++){
+  //       paths.push(songs[i].name)
+  //     }
+      
+  //     console.log(paths);
+
+      
+  // });
   
-});
+  updatePlayList();
+
+  res.redirect('/');  
+}); 
 
 app.get('/next', function(req, res){
   console.log('Switching to the next song...');
