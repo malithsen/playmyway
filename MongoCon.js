@@ -49,18 +49,6 @@ MongoCon.prototype.upvote = function(id, cb) {
   });
 };
 
-// MongoCon.prototype.playcur = function(cb) {
-
-//   this.Song.find({}, {'name': true}, {sort: {'votes': -1, 'lastPlayed': -1}}, function(err, res) {
-//     if (err){
-//       cb(err);
-//     } else {
-//       // console.log(res);
-//       cb(null, res);
-//     }
-//   });
-// }
-
 MongoCon.prototype.playcur = function(cb) {
 
   this.Song.findOneAndUpdate({}, {'lastPlayed': Date.now()}, {sort: {'votes': -1, 'lastPlayed' : 1}}, function(err, res) {
