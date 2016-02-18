@@ -16,7 +16,9 @@ var player, currSong;
 player = new Player([]);
     
 var PATH = '/home/hasa93/Songs/';
-var player, currSong;
+var player, currSong = {};
+
+player = new Player([]);
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -41,8 +43,12 @@ var updatePlayList = function(){
                .on('playing', function(song){
                  console.log(song);
                  console.log('Playing ' + song._name);
-                 currSong = song;                                   
-                 mongocon.resetVotes(song.src); 
+
+                 currSong = song;
+                 mongocon.resetVotes(song.src);
+
+                 currSong = song; 
+                 mongocon.resetVotes(song.src);
                 })
                .on('error', function(err){
                  console.log("Pfft!");
@@ -91,12 +97,11 @@ app.get('/play', function(req, res) {
   //     for(var i = 0; i < songs.length; i++){
   //       paths.push(songs[i].name)
   //     }
- 
+
   updatePlayList();
 
-  res.redirect('/');  
+  res.redirect('/');
 }); 
-
 
 app.get('/next', function(req, res){
   console.log('Switching to the next song...');
