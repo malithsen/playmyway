@@ -83,15 +83,6 @@ app.get('/play', function(req, res) {
     player.stop();
   }
 
-  // mongocon.getSongs(function(err, songs){
-  //     if(err) console.log(err);
-
-  //     var paths = []
-
-  //     for(var i = 0; i < songs.length; i++){
-  //       paths.push(songs[i].name)
-  //     }
-
   updatePlayList();
 
   res.redirect('/');
