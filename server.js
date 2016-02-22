@@ -97,6 +97,7 @@ app.get('/next', function(req, res){
     return;
   }
 
+  player.stop();
   player.next();
 
   res.redirect('/');
