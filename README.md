@@ -9,7 +9,7 @@ change PATH variable in server.js to point to your songs directory
 for Debian/Ubuntu users install ALSA headers if not already installed:
 sudo apt-get install libasound2-dev
 
-#### What needs to be done 
+#### What needs to be done
 
 ##### immediately
 
@@ -21,9 +21,9 @@ sudo apt-get install libasound2-dev
 * Limit access to admin view (password maybe?)
 
 ###### Backend
-* Sort songs by votes. If multiple songs have the same votes, song last voted should be the last
+* ~~Sort songs by votes. If multiple songs have the same votes, song last voted should be the last~~
 * Change songs directory, better if we can add multiple directories and individual songs.
-* Automatically move to the next song the playlist once the current one is over.
+* ~~Automatically move to the next song in the playlist once the current one is over.~~
 
 ##### Not so immediately
 Well let's save that for later :P
