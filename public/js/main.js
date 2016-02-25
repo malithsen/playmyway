@@ -51,5 +51,9 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   console.log("Admin ctrl");
 
+  $scope.playthis = function(id){
+    console.log("playing song with id", id);
+  };
+
 }]);
 
