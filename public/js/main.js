@@ -1,22 +1,19 @@
- var qApp = angular.module('qApp', ['ngRoute']);
+ var qApp = angular.module('qApp', ['ui.router']);
 
-qApp.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", function($stateProvider, $urlRouterProvider, $locationProvider) {
+  $urlRouterProvider.otherwise("/");
   $locationProvider.html5Mode(true);
-  $locationProvider.hashPrefix('!');
 
-  $routeProvider
-  .when('/', {
-    templateUrl: 'views/main',
-    controller: 'RootCtrl'
-  })
-  .when('/admin', {
-    templateUrl: 'views/admin',
-    controller: 'AdminCtrl'
-  })
-  .otherwise({
-    templateUrl: 'views/404',
-    controller: 'MetaCtrl'
-  });
+  $stateProvider
+    .state('/', {
+      url: "/",
+      templateUrl: "views/main",
+      controller: 'RootCtrl'
+    })
+    .state('admin', {
+      templateUrl: "views/admin",
+      controller: 'AdminCtrl'
+    })
 }]);
 
 
