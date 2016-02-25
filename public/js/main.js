@@ -9,6 +9,10 @@ qApp.config(['$locationProvider', '$routeProvider', function($locationProvider, 
     templateUrl: 'views/main',
     controller: 'RootCtrl'
   })
+  .when('/admin', {
+    templateUrl: 'views/admin',
+    controller: 'AdminCtrl'
+  })
   .otherwise({
     templateUrl: 'views/404',
     controller: 'MetaCtrl'
@@ -16,13 +20,13 @@ qApp.config(['$locationProvider', '$routeProvider', function($locationProvider, 
 }]);
 
 
-qApp.controller('RootCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
+qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', function($scope, $rootScope, $http, $interval) {
 
   console.log("Root ctrl");
 
   $scope.loadSongs = function() {
     $http.get('songs/').success(function(data) {
-      $scope.songs = data;
+      $rootScope.songs = data;
     });
   };
 
@@ -43,6 +47,12 @@ qApp.controller('RootCtrl', ['$scope', '$http', '$interval', function($scope, $h
   $scope.loadSongs();
 
   $interval($scope.getCurrSong, 1000);
+
+}]);
+
+qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+
+  console.log("Admin ctrl");
 
 }]);
 
