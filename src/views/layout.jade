@@ -7,13 +7,13 @@ html(ng-app="qApp")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
     script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js")
-    script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.min.js")
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js")
 
     link(href="http://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
     link(href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css", type="text/css", rel="stylesheet", media="screen,projection")
     link(href="/stylesheets/styles.css", rel="stylesheet")
 
-    section(ng-view)
+    section(ui-view)
 
     script(src="https://code.jquery.com/jquery-2.1.1.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js")
