@@ -1,0 +1,22 @@
+
+body
+    nav.teal
+      .nav-wrapper
+        a.brand-logo(href='play') PlayMyWay
+          span.song-title {{currSong._name}}
+        ul#nav-mobile.right.hide-on-med-and-down
+          li
+            a(href='/') Playlist
+
+.container
+  .row
+    .col.s12
+      div(ng-repeat="song in songs")
+        .col.s1
+          a.btn-floating.btn-large.waves-effect.waves-light.purple.lighten-1.vote-btn(ng-click="playthis(song._id)")
+            i.material-icons play_arrow
+        .col.s11
+          .card-panel.blue
+            .white-text
+              {{song.name}}
+
