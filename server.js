@@ -42,9 +42,6 @@ var updatePlayList = function(){
 
                  currSong = song;
                  mongocon.resetVotes(song.src);
-
-                 currSong = song;
-                 mongocon.resetVotes(song.src);
                 })
                .on('error', function(err){
                  playing = false;
