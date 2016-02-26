@@ -113,6 +113,11 @@ app.get('/stop', function(req, res){
 
 });
 
+app.get('/pause', function(req, res){
+  player.pause();
+  res.redirect('/');
+});
+
 app.get('/reload', function(req, res) {
   console.log("Reload");
   fs.readdir(PATH, function(err, items) {

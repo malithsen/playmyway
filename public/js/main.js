@@ -35,10 +35,9 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
   };
 
   $scope.getCurrSong = function(){
-     $http.get('/songs/current').success(function(data) {
-     console.log("Retrieved current...");
-     $scope.currSong = data;
-   });
+    $http.get('/songs/current').success(function(data) {
+      $rootScope.currSong = data;
+    });
   };
 
   $scope.loadSongs();
@@ -51,8 +50,44 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   console.log("Admin ctrl");
 
-  $scope.playthis = function(id){
-    console.log("playing song with id", id);
+  $scope.player = {
+    playing: false,
+    paused: false
+  };
+
+  $scope.play = function(){
+    if ($scope.player.paused === true) {
+      $http.get('/pause').success(function(data) {
+        console.log("Unpaused");
+        $scope.player.playing = true;
+        $scope.player.paused = false;
+      });
+    } else {
+      $http.get('/play').success(function(data) {
+        console.log("Playing");
+        $scope.player.playing = true;
+      });
+    }
+  };
+
+  $scope.pause = function(){
+    $http.get('/pause').success(function(data) {
+      console.log("Paused");
+      $scope.player.playing = false;
+      $scope.player.paused = true;
+    });
+  };
+
+  $scope.next = function(){
+    $http.get('/next').success(function(data) {
+      console.log("Next song");
+      $scope.player.playing = true;
+      $scope.player.paused = false;
+    });
+  };
+
+  $scope.previous = function(){
+    console.log("Play previous");
   };
 
 }]);
