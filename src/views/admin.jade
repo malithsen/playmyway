@@ -8,16 +8,16 @@ body
           li
             a(ui-sref='/') Playlist
         .center
+          button.control.prev(ng-click='previous()') Prev
           button.control.play(ng-click='play()', ng-hide='player.playing') Play
           button.control.pause(ng-click='pause()', ng-show='player.playing') Pause
-          button.control.prev(ng-click='previous()') Prev
           button.control.next(ng-click='next()') Next
 
 .container
   .row
     .col.s12
       div(ng-repeat="song in songs")
-        .col.s11
+        .col.s8.offset-s2
           .card-panel.blue
             .white-text
               {{song.name}}
