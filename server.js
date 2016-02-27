@@ -123,7 +123,7 @@ app.get('/stop', function(req, res){
 
 app.get('/pause', function(req, res){
   player.pause();
-  playing = false;
+  playing = !playing;
   res.redirect('/');
 });
 
