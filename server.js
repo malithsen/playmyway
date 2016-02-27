@@ -11,6 +11,7 @@ var express = require('express'),
 
 var PATH = ''; // When comitting keep this empty.
 var player, currSong;
+var playing = false;
 
 player = new Player([]);
 
@@ -35,6 +36,7 @@ var updatePlayList = function(){
 
     player = new Player(path)
                .on('playing', function(song){
+                playing = true;
                  console.log(song);
                  console.log('Playing ' + song._name);
 
@@ -45,6 +47,7 @@ var updatePlayList = function(){
                  mongocon.resetVotes(song.src);
                 })
                .on('error', function(err){
+                 playing = false;
                  console.log("Pfft!");
                  console.log(err);
                  updatePlayList();
@@ -52,6 +55,10 @@ var updatePlayList = function(){
                .play();
   });
 }
+
+app.get('/api/playing', function(req, res) {
+  return res.json({ playerState: playing});
+});
 
 app.get('/songs', function(req, res) {
   var cb = function(err, data) {
@@ -107,6 +114,7 @@ app.get('/next', function(req, res){
 app.get('/stop', function(req, res){
   console.log('Stopping current song...')
   player.stop();
+  playing = false;
 
   currSong = '';
   res.redirect('/');
@@ -115,6 +123,7 @@ app.get('/stop', function(req, res){
 
 app.get('/pause', function(req, res){
   player.pause();
+  playing = false;
   res.redirect('/');
 });
 
