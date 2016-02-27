@@ -55,6 +55,15 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
     paused: false
   };
 
+  $scope.getPlayerState = function() {
+    $http.get('/api/playing').success(function(data) {
+      $scope.player.playing = data['playerState'];
+      console.log($scope.player.playing);
+    });
+  };
+
+  $scope.getPlayerState();
+
   $scope.play = function(){
     if ($scope.player.paused === true) {
       $http.get('/pause').success(function(data) {
