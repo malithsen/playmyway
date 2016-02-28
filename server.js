@@ -13,11 +13,10 @@ var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-// Define the strategy to be used by PassportJS
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log(username, password)
-    if (username === "admin" && password === "admin") // stupid example
+    if (username === "admin" && password === "admin")
       return done(null, {name: "admin"});
 
     return done(null, false);
@@ -33,7 +32,6 @@ passport.deserializeUser(function(user, cb) {
   cb(null, user);
 });
 
-// Define a middleware function to be used for every secured routes
 var auth = function(req, res, next){
   if (!req.isAuthenticated())
     res.sendStatus(401);
@@ -72,8 +70,8 @@ app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-app.use(passport.initialize()); // Add passport initialization
-app.use(passport.session());    // Add passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use(express.static(__dirname + '/public'));
@@ -197,7 +195,7 @@ app.get('/loggedin', function(req, res) {
 });
 
 // route to log in
-app.post('/login', passport.authenticate('local', { successRedirect : '/'}), function(req, res) {
+app.post('/login', passport.authenticate('local'), function(req, res) {
   console.log(req);
   res.send(req.user);
 });
