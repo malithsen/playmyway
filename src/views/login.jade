@@ -1,16 +1,21 @@
-h1 Login
-form(ng-submit='login()')
-  p
-    label.control-label Username
-    input(type='text', placeholder='Username', ng-model='user.username')
-  p
-    label.control-label Password
-    input(type='password', placeholder='Password', ng-model='user.password')
-    br
-  p
-    button.btn.btn-primary(type='submit') Login
-  p
-    i
-      | username: admin
-      br
-      | password: admin
+h2.center-align Login
+.row
+  form.col.s6.offset-s3(ng-submit='login()')
+    .row
+      .input-field.col.s12
+        input(type='text', ng-model='user.username')
+        label(for='text') Text
+    .row
+      .input-field.col.s12
+        input(type='password', ng-model='user.password')
+        label(for='pass') Password
+    .row
+      .col.s12
+        p
+          input#remember(type='checkbox')
+          label(for='remember') Remember me
+    .divider
+    .row
+      .col.m12
+        p.right-align
+          button.btn.btn-large.waves-effect.waves-light(type='submit') Login
