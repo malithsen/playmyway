@@ -1,4 +1,4 @@
- var qApp = angular.module('qApp', ['ui.router']);
+var qApp = angular.module('qApp', ['ui.router']);
 
 qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", function($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise("/");
@@ -21,6 +21,18 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
 
   console.log("Root ctrl");
 
+  $scope.socket = io();
+
+  $scope.socket.on('refreshList', function(msg){
+    $scope.loadSongs();
+  });
+
+  $scope.socket.on('songChanged', function(msg){    
+    $scope.loadSongs();
+    console.log("Song changes");
+    $rootScope.currSong = msg;
+  });
+
   $scope.loadSongs = function() {
     $http.get('songs/').success(function(data) {
       $rootScope.songs = data;
@@ -30,19 +42,20 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
   $scope.voteup = function(id) {
     $http.get('upvote/' + id).success(function(data) {
       console.log(data);
-      $scope.loadSongs();
+      $scope.socket.emit('voteup', '');
     });
   };
 
   $scope.getCurrSong = function(){
     $http.get('/songs/current').success(function(data) {
-      $rootScope.currSong = data;
+      $rootScope.currSong = data._name;
     });
   };
-
+  
   $scope.loadSongs();
+  $scope.getCurrSong();
 
-  $interval($scope.getCurrSong, 1000);
+  //$interval($scope.getCurrSong, 1000);
 
 }]);
 
