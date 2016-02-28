@@ -1,6 +1,41 @@
 var qApp = angular.module('qApp', ['ui.router']);
 
-qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", function($stateProvider, $urlRouterProvider, $locationProvider) {
+qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+
+  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope, $state){
+    // Initialize a new promise
+    var deferred = $q.defer();
+    // Make an AJAX call to check if the user is logged in
+    $http.get('/loggedin').success(function(user){
+      // Authenticated
+      if (user !== '0')
+        /*$timeout(deferred.resolve, 0);*/
+        deferred.resolve();
+      // Not Authenticated
+      else {
+        $rootScope.message = 'You need to log in.';
+        //$timeout(function(){deferred.reject();}, 0);
+        deferred.reject();
+        $state.go('login');
+      }
+    });
+    return deferred.promise;
+  };
+
+  $httpProvider.interceptors.push(function($q, $location) {
+    return {
+      response: function(response) {
+        // do something on success
+        return response;
+      },
+      responseError: function(response) {
+        if (response.status === 401)
+          $location.url('/login');
+        return $q.reject(response);
+      }
+    };
+  });
+
   $urlRouterProvider.otherwise("/");
   $locationProvider.html5Mode(true);
 
@@ -12,10 +47,55 @@ qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", functi
     })
     .state('admin', {
       templateUrl: "views/admin",
-      controller: 'AdminCtrl'
+      controller: 'AdminCtrl',
+      resolve: {
+        loggedin: checkLoggedin
+      }
     })
-}]);
+    .state('login', {
+      templateUrl: "views/login",
+      controller: 'LoginCtrl'
+    })
 
+}])
+.run(function($rootScope, $http){
+  $rootScope.message = '';
+
+  // Logout function is available in any pages
+  $rootScope.logout = function(){
+    $rootScope.message = 'Logged out.';
+    $http.post('/logout');
+  };
+});
+
+qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', function($scope, $rootScope, $http, $state) {
+  // This object will be filled by the form
+  $scope.user = {};
+
+  // Register the login() function
+  $scope.login = function(){
+    console.log($scope.user);
+    $http({
+      url: 'login',
+      method: 'POST',
+      contentType: "application/json",
+      data: {
+        username: $scope.user.username,
+        password: $scope.user.password
+      }
+    })
+    .success(function(user){
+      // No error: authentication OK
+      $rootScope.message = 'Authentication successful!';
+      $state.go('admin');
+    })
+    .error(function(){
+      // Error: authentication failed
+      $rootScope.message = 'Authentication failed.';
+      $state.go('login');
+    });
+  };
+}]);
 
 qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', function($scope, $rootScope, $http, $interval) {
 
