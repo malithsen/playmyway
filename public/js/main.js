@@ -68,24 +68,25 @@ qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$http
   };
 });
 
-qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', function($scope, $rootScope, $http, $state) {
+qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpParamSerializerJQLike', function($scope, $rootScope, $http, $state, $httpParamSerializerJQLike) {
   // This object will be filled by the form
   $scope.user = {};
 
   // Register the login() function
   $scope.login = function(){
     console.log($scope.user);
+    
     $http({
       url: 'login',
       method: 'POST',
-      contentType: "application/json",
-      data: {
-        username: $scope.user.username,
-        password: $scope.user.password
-      }
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded" 
+      },
+      data: $httpParamSerializerJQLike($scope.user)
     })
     .success(function(user){
       // No error: authentication OK
+      console.log(user);
       $rootScope.message = 'Authentication successful!';
       $state.go('admin');
     })
