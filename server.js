@@ -29,11 +29,8 @@ passport.serializeUser(function(user, cb) {
   cb(null, user);
 });
 
-passport.deserializeUser(function(id, cb) {
-  db.users.findById(id, function (err, user) {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
 
 // Define a middleware function to be used for every secured routes
