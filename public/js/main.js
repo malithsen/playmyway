@@ -74,25 +74,23 @@ qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpP
 
   // Register the login() function
   $scope.login = function(){
+    console.log("loging in");
     console.log($scope.user);
-    
+
     $http({
-      url: 'login',
+      url: '/login',
       method: 'POST',
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded" 
+        "Content-Type": "application/x-www-form-urlencoded"
       },
       data: $httpParamSerializerJQLike($scope.user)
     })
     .success(function(user){
       // No error: authentication OK
       console.log(user);
-      $rootScope.message = 'Authentication successful!';
       $state.go('admin');
     })
     .error(function(){
-      // Error: authentication failed
-      $rootScope.message = 'Authentication failed.';
       $state.go('login');
     });
   };
@@ -128,8 +126,6 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
   };
 
   $scope.loadSongs();
-
-  //$interval($scope.getCurrSong, 1000);
 
 }]);
 

@@ -1,11 +1,11 @@
 h1 Login
-form(action="/login", method="post")
+form(ng-submit='login()')
   p
     label.control-label Username
-    input(type='text', placeholder='Username', name="username")
+    input(type='text', placeholder='Username', ng-model='user.username')
   p
     label.control-label Password
-    input(type='password', placeholder='Password', name="password")
+    input(type='password', placeholder='Password', ng-model='user.password')
     br
   p
     button.btn.btn-primary(type='submit') Login
