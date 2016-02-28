@@ -1,0 +1,16 @@
+h1 Login
+form(ng-submit='login()')
+  p
+    label.control-label Username
+    input(type='text', placeholder='Username', ng-model='user.username')
+  p
+    label.control-label Password
+    input(type='password', placeholder='Password', ng-model='user.password')
+    br
+  p
+    button.btn.btn-primary(type='submit') Login
+  p
+    i
+      | username: admin
+      br
+      | password: admin
