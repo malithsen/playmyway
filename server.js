@@ -7,7 +7,10 @@ var express = require('express'),
     async = require('async'),
     Player = require('player'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    http = require('http'),
+    Socket = require('socket.io');
+
 
 var PATH = ''; // When comitting keep this empty.
 var player, currSong;
@@ -17,6 +20,20 @@ player = new Player([]);
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
+
+http = http.Server(app);
+
+var io = Socket(http);
+
+io.on('connection', function(socket){
+  console.log("New connection...");
+
+  socket.on('voteup', function(msg){
+    console.log("Voted up!");
+    io.emit('refreshList');
+  });
+
+});
 
 app.set('views', __dirname + '/src/views');
 app.set('view engine', 'jade');
@@ -35,14 +52,11 @@ var updatePlayList = function(){
 
     player = new Player(path)
                .on('playing', function(song){
-                 console.log(song);
                  console.log('Playing ' + song._name);
-
-                 currSong = song;
+                 io.emit('songChanged', song._name);                 
                  mongocon.resetVotes(song.src);
-
                  currSong = song;
-                 mongocon.resetVotes(song.src);
+                 //mongocon.resetVotes(song.src);
                 })
                .on('error', function(err){
                  console.log("Pfft!");
@@ -153,6 +167,6 @@ app.get('/', function(req, res) {
 
 var port = process.env.PORT || 8080;
 
-app.listen(port, function(){
+http.listen(port, function(){
   console.log("Listening on port " + port);
 });
