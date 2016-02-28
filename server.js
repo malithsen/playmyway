@@ -29,8 +29,8 @@ passport.serializeUser(function(user, cb) {
   cb(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(user, cb) {
+  cb(null, user);
 });
 
 // Define a middleware function to be used for every secured routes
@@ -51,7 +51,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
 
-http = http.Server(app);
+var http = http.Server(app);
 
 var io = Socket(http);
 
@@ -197,7 +197,7 @@ app.get('/loggedin', function(req, res) {
 });
 
 // route to log in
-app.post('/login', passport.authenticate('local'), function(req, res) {
+app.post('/login', passport.authenticate('local', { successRedirect : '/'}), function(req, res) {
   console.log(req);
   res.send(req.user);
 });
