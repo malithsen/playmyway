@@ -46,14 +46,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
     });
   };
 
-  $scope.getCurrSong = function(){
-    $http.get('/songs/current').success(function(data) {
-      $rootScope.currSong = data._name;
-    });
-  };
-
   $scope.loadSongs();
-  $scope.getCurrSong();
 
   //$interval($scope.getCurrSong, 1000);
 

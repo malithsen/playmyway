@@ -90,10 +90,6 @@ app.get('/upvote/:id', function(req, res) {
 
 });
 
-app.get('/songs/current', function(req, res){
-  res.json(currSong);
-});
-
 app.get('/play', function(req, res) {
   console.log("playing");
 
