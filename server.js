@@ -86,11 +86,11 @@ var updatePlayList = function(){
 
     player = new Player(path)
               .on('playing', function(song){
-              playing = true;
-              console.log(song);
-              io.emit('songChanged', song._name);
-              mongocon.resetVotes(song.src);
-              currSong = song;
+                playing = true;
+                console.log(song);
+                io.emit('songChanged', song);
+                mongocon.resetVotes(song.src);
+                currSong = song;
               })
              .on('error', function(err){
                playing = false;
@@ -153,7 +153,7 @@ app.get('/next', auth, function(req, res){
 
 });
 
-app.get('/stop', auth, auth, function(req, res){
+app.get('/stop', auth, function(req, res){
   console.log('Stopping current song...')
   player.stop();
   playing = false;

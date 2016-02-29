@@ -106,10 +106,10 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
     $scope.loadSongs();
   });
 
-  $scope.socket.on('songChanged', function(msg){
+  $scope.socket.on('songChanged', function(song){
     $scope.loadSongs();
-    console.log("Song changes");
-    $rootScope.currSong = msg;
+    console.log("Song changes", song);
+    $rootScope.currSong = song;
   });
 
   $scope.loadSongs = function() {
