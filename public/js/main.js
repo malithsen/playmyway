@@ -12,12 +12,9 @@ qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$http
     $http.get('/loggedin').success(function(user){
       // Authenticated
       if (user !== '0')
-        /*$timeout(deferred.resolve, 0);*/
         deferred.resolve();
       // Not Authenticated
       else {
-        $rootScope.message = 'You need to log in.';
-        //$timeout(function(){deferred.reject();}, 0);
         deferred.reject();
         $state.go('login');
       }
@@ -62,11 +59,9 @@ qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$http
 
 }])
 .run(function($rootScope, $http){
-  $rootScope.message = '';
 
   // Logout function is available in any pages
   $rootScope.logout = function(){
-    $rootScope.message = 'Logged out.';
     $http.post('/logout');
   };
 });
