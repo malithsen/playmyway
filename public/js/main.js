@@ -1,6 +1,9 @@
-var qApp = angular.module('qApp', ['ui.router']);
+var qApp = angular.module('qApp', ['ui.router', 'cfp.loadingBar']);
 
-qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$httpProvider", "cfpLoadingBarProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
+
+  cfpLoadingBarProvider.autoIncrement = false;
+  cfpLoadingBarProvider.includeSpinner = false;
 
   var checkLoggedin = function($q, $timeout, $http, $location, $rootScope, $state){
     // Initialize a new promise
@@ -96,9 +99,16 @@ qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpP
   };
 }]);
 
-qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', function($scope, $rootScope, $http, $interval) {
+qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpLoadingBar', function($scope, $rootScope, $http, $interval, cfpLoadingBar) {
 
   console.log("Root ctrl");
+  var duration;
+  var progress;
+  var timer;
+  var timerId;
+
+  cfpLoadingBar.start();
+  cfpLoadingBar.set(0); // Hide progress bar at the beginning
 
   $scope.socket = io();
 
@@ -107,10 +117,33 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
   });
 
   $scope.socket.on('songChanged', function(song){
+    duration = song.meta.duration;
+
     $scope.loadSongs();
     console.log("Song changes", song);
     $rootScope.currSong = song;
+    $scope.startTimer(duration);
   });
+
+  $scope.startTimer = function(duration) {
+    console.log("duration", duration);
+    // stops any running interval to avoid two intervals running at the same time
+    $scope.stopTimer();
+    timer = 0
+
+    // store the interval promise
+    timerId = $interval(function(){
+      if (!$rootScope.player.paused){
+        timer++;
+        progress = timer/duration;
+        cfpLoadingBar.set(progress);
+      };
+    }, 1000);
+  };
+
+  $scope.stopTimer = function() {
+    $interval.cancel(timerId);
+  };
 
   $scope.loadSongs = function() {
     $http.get('songs/').success(function(data) {
@@ -133,31 +166,31 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   console.log("Admin ctrl");
 
-  $scope.player = {
+  $rootScope.player = {
     playing: false,
     paused: false
   };
 
   $scope.getPlayerState = function() {
     $http.get('/api/playing').success(function(data) {
-      $scope.player.playing = data['playerState'];
-      console.log($scope.player.playing);
+      $rootScope.player.playing = data['playerState'];
+      console.log($rootScope.player.playing);
     });
   };
 
   $scope.getPlayerState();
 
   $scope.play = function(){
-    if ($scope.player.paused === true) {
+    if ($rootScope.player.paused === true) {
       $http.get('/pause').success(function(data) {
         console.log("Unpaused");
-        $scope.player.playing = true;
-        $scope.player.paused = false;
+        $rootScope.player.playing = true;
+        $rootScope.player.paused = false;
       });
     } else {
       $http.get('/play').success(function(data) {
         console.log("Playing");
-        $scope.player.playing = true;
+        $rootScope.player.playing = true;
       });
     }
   };
@@ -165,16 +198,17 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
   $scope.pause = function(){
     $http.get('/pause').success(function(data) {
       console.log("Paused");
-      $scope.player.playing = false;
-      $scope.player.paused = true;
+      $rootScope.player.playing = false;
+      $rootScope.player.paused = true;
+      window.clearInterval($rootScope.timerId);
     });
   };
 
   $scope.next = function(){
     $http.get('/next').success(function(data) {
       console.log("Next song");
-      $scope.player.playing = true;
-      $scope.player.paused = false;
+      $rootScope.player.playing = true;
+      $rootScope.player.paused = false;
     });
   };
 
