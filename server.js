@@ -39,7 +39,7 @@ var auth = function(req, res, next){
     next();
 };
 
-var PATH = ''; // When comitting keep this empty.
+var PATH = '/home/hasa93/Songs/'; // When comitting keep this empty.
 var player, currSong;
 var playing = false;
 
@@ -59,6 +59,10 @@ io.on('connection', function(socket){
   socket.on('voteup', function(msg){
     console.log("Voted up!");
     io.emit('refreshList');
+  });
+
+  socket.on('changeVol', function(msg){
+    player.setVolume(msg);
   });
 
 });

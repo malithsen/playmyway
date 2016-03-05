@@ -1,4 +1,4 @@
-var qApp = angular.module('qApp', ['ui.router']);
+var qApp = angular.module('qApp', ['ui.router', 'rzModule']);
 
 qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
@@ -132,6 +132,26 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', funct
 qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
 
   console.log("Admin ctrl");
+  
+  $scope.socket = io();
+
+  $scope.volume={
+    value: 100,
+    options:{
+      floor: 0,
+      ceil: 100,
+      hideLimitLabels:true,
+      
+      getPointerColor: function(val, ptrType){
+        return "#008080"
+      },
+
+      onChange: function(sliderId, modelValue, highValue){
+        $scope.socket.emit('changeVol', modelValue / 100);
+        console.log("Changed!");
+      }
+    }    
+  }
 
   $scope.player = {
     playing: false,
