@@ -106,7 +106,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   cfpLoadingBar.set(0); // Hide progress bar at the beginning
 
   $scope.socket = io();
-  $scope.recentlyVoted = [];  
+  $scope.recentlyVoted = [];
 
   $scope.socket.on('refreshList', function(msg){
     $scope.loadSongs();
@@ -157,13 +157,13 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   $scope.voteup = function(id) {
     $http.get('upvote/' + id).success(function(data) {
       console.log(data);
-      $scope.socket.emit('voteup',''); 
+      $scope.socket.emit('voteup','');
     });
   };
 
   $scope.pushVoted = function(song){
     if($scope.recentlyVoted.indexOf(song.name) < 0){
-      
+
       $http.get('upvote/' + song._id).success(function(data) {
         console.log(data);
         $scope.recentlyVoted.push(song.name);
@@ -180,10 +180,10 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
 qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
 
   console.log("Admin ctrl");
-  
+
   $scope.socket = io();
   $scope.volume = 100;
-    
+
   $rootScope.player = {
     playing: false,
     paused: false
@@ -200,7 +200,7 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
     $http.get('/api/paused').success(function(data) {
       $rootScope.player.paused = data['pausedState'];
       console.log($rootScope.player.paused);
-    }); 
+    });
   };
 
   $scope.getPlayerState();

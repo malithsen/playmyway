@@ -39,7 +39,7 @@ var auth = function(req, res, next){
     next();
 };
 
-var PATH = '/home/hasa93/Songs/'; // When comitting keep this empty.
+var PATH = ''; // When comitting keep this empty.
 var player, currSong;
 var playing = false;
 var paused = false;

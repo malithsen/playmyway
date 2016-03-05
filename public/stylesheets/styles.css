@@ -19,9 +19,16 @@
 	font-style: italic;
 }
 
-input[type=range] {
-  -webkit-appearance: none;
-  width: 20%;  
+.thumb {
+  display: none;
+}
+
+input.vol-slider {
+  /*-webkit-appearance: none;*/
+  width: 20%;
+  position: relative;
+  top: -50px;
+  left: 500px;
 }
 
 nav button.control {
