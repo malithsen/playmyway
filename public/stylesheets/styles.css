@@ -19,16 +19,9 @@
 	font-style: italic;
 }
 
-.vol-slider{
-  width: 200px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-
-.rzslider{
-  display: inline-block;
-  height: 30px !important;
+input[type=range] {
+  -webkit-appearance: none;
+  width: 20%;  
 }
 
 nav button.control {

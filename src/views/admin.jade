@@ -13,8 +13,7 @@ body
           button.control.pause(ng-click='pause()', ng-show='player.playing') Pause
           button.control.next(ng-click='next()') Next
 
-          .vol-slider
-            rzslider(rz-slider-model="volume.value", rz-slider-options="volume.options")
+          input.vol-slider(ng-change='changeVol()' ng-model="volume" type="range", min="0", max="100", step="1", value="100")
 
 .container
   .row

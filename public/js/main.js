@@ -1,4 +1,4 @@
-var qApp = angular.module('qApp', ['ui.router', 'cfp.loadingBar', 'rzModule']);
+var qApp = angular.module('qApp', ['ui.router', 'cfp.loadingBar']);
 
 qApp.config(['$stateProvider', '$urlRouterProvider', "$locationProvider", "$httpProvider", "cfpLoadingBarProvider", function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
 
@@ -162,25 +162,8 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
   console.log("Admin ctrl");
   
   $scope.socket = io();
-
-  $scope.volume={
-    value: 100,
-    options:{
-      floor: 0,
-      ceil: 100,
-      hideLimitLabels:true,
-      
-      getPointerColor: function(val, ptrType){
-        return "#008080"
-      },
-
-      onChange: function(sliderId, modelValue, highValue){
-        $scope.socket.emit('changeVol', modelValue / 100);
-        console.log("Changed!");
-      }
-    }    
-  }
-
+  $scope.volume = 100;
+    
   $rootScope.player = {
     playing: false,
     paused: false
@@ -233,6 +216,10 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
       $rootScope.player.playing = true;
       $rootScope.player.paused = false;
     });
+  };
+
+  $scope.changeVol = function(){
+    $scope.socket.emit('changeVol', $scope.volume / 100);
   };
 
   $scope.previous = function(){
