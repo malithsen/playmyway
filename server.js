@@ -42,6 +42,7 @@ var auth = function(req, res, next){
 var PATH = ''; // When comitting keep this empty.
 var player, currSong;
 var playing = false;
+var paused = false;
 
 player = new Player([]);
 
@@ -87,6 +88,7 @@ var updatePlayList = function(){
     player = new Player(path)
               .on('playing', function(song){
                 playing = true;
+                paused = false;
                 console.log(song);
                 io.emit('songChanged', song);
                 mongocon.resetVotes(song.src);
@@ -94,6 +96,7 @@ var updatePlayList = function(){
               })
              .on('error', function(err){
                playing = false;
+               paused = false;
                console.log("Pfft!");
                console.log(err);
                updatePlayList();
@@ -104,6 +107,10 @@ var updatePlayList = function(){
 
 app.get('/api/playing', function(req, res) {
   return res.json({ playerState: playing});
+});
+
+app.get('/api/paused', function(req, res) {
+  return res.json({ pausedState: paused});
 });
 
 app.get('/songs', function(req, res) {
@@ -157,6 +164,7 @@ app.get('/stop', auth, function(req, res){
   console.log('Stopping current song...')
   player.stop();
   playing = false;
+  paused = false;
 
   currSong = '';
   res.redirect('/');
@@ -166,6 +174,7 @@ app.get('/stop', auth, function(req, res){
 app.get('/pause', auth, function(req, res){
   player.pause();
   playing = !playing;
+  paused = !paused;
   res.redirect('/');
 });
 
