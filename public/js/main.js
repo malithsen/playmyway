@@ -106,6 +106,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   cfpLoadingBar.set(0); // Hide progress bar at the beginning
 
   $scope.socket = io();
+  $scope.recentlyVoted = [];  
 
   $scope.socket.on('refreshList', function(msg){
     $scope.loadSongs();
@@ -118,6 +119,13 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
     console.log("Song changes", song);
     $rootScope.currSong = song;
     $scope.startTimer(duration);
+
+    var ind = $scope.recentlyVoted.indexOf(song._name);
+
+    if(ind > -1){
+      $scope.recentlyVoted = $scope.recentlyVoted.splice(ind, 1);
+    }
+
   });
 
   $scope.startTimer = function(duration) {
@@ -149,9 +157,21 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   $scope.voteup = function(id) {
     $http.get('upvote/' + id).success(function(data) {
       console.log(data);
-      $scope.socket.emit('voteup', '');
+      $scope.socket.emit('voteup',''); 
     });
   };
+
+  $scope.pushVoted = function(song){
+    if($scope.recentlyVoted.indexOf(song.name) < 0){
+      
+      $http.get('upvote/' + song._id).success(function(data) {
+        console.log(data);
+        $scope.recentlyVoted.push(song.name);
+        $scope.socket.emit('voteup', data);
+      });
+
+    }
+  }
 
   $scope.loadSongs();
 
