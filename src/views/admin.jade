@@ -7,7 +7,7 @@ body
         ul#nav-mobile.right.hide-on-med-and-down
           li
             a(ui-sref='/') Playlist
-        .center
+        .center.playercontrols
           button.control.prev(ng-click='previous()') Prev
           button.control.play(ng-click='play()', ng-hide='player.playing') Play
           button.control.pause(ng-click='pause()', ng-show='player.playing') Pause
