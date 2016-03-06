@@ -12,13 +12,14 @@ body
   .row
     .col.s10.offset-s1
       div(ng-repeat="song in songs")
-        .col.s11
-          .vote-count.purple-text.text-lighten-1
+        .vote-count
+          .purple-text.text-lighten-1
             {{song.votes || 0}}
-          .card-panel.blue.song-card
+        .song-card
+          .card-panel.blue
             .white-text
               {{song.name}}
-        .col.s1
-          a.btn-floating.btn-large.waves-effect.waves-light.purple.lighten-1.vote-btn(ng-click="pushVoted(song)")
+        .vote-btn
+          a.btn-floating.btn-large.waves-effect.waves-light.purple.lighten-1(ng-click="pushVoted(song)")
             i.material-icons present_to_all
 

@@ -1,18 +1,29 @@
 
+
+
 .vote-btn {
   float: right;
-  margin-top: 23.5%;
+  width: 10%;
+  height: 84.5px;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
 .vote-count {
   float: left;
+  width: 5%;
   font-size: xx-large;
-  margin-top: 2%;
+  height: 84.5px;
+  padding-top: 10px;
 }
 
 .song-card {
-  margin-left: 5%;
+  width: 85%;
+  float: left;
+  overflow: hidden;
+  white-space: nowrap;
 }
+
 
 .song-title{
 	font-size: small;
@@ -78,4 +89,30 @@ nav button.next {
 
 nav button.next:hover {
     background: url('/images/control_end_hover.png') center no-repeat;
+}
+
+/*Media queries*/
+
+@media only screen and (max-width: 1200px) {
+    .vote-btn, .vote-count {
+        height: 83.5px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+
+  .vote-btn, .vote-count {
+      height: 82px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+
+  .vote-count {
+    width: 10%;
+  }
+
+  .song-card {
+    width: 80%;
+  }
 }
