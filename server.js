@@ -3,6 +3,7 @@
 var express = require('express'),
     config = require('./config'),
     MongoCon = require('./MongoCon'),
+    playerConfig = require('./PlayerConfig'),
     _ = require('lodash'),
     async = require('async'),
     Player = require('player'),
@@ -16,7 +17,7 @@ var express = require('express'),
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log(username, password)
-    if (username === "admin" && password === "admin")
+    if (username === playerConfig.username && password === playerConfig.password)
       return done(null, {name: "admin"});
 
     return done(null, false);
@@ -39,7 +40,7 @@ var auth = function(req, res, next){
     next();
 };
 
-var PATH = ''; // When comitting keep this empty.
+var PATH = playerConfig.PATH; // When comitting keep this empty.
 var player, currSong;
 var playing = false;
 var paused = false;
