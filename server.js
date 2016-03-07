@@ -40,7 +40,7 @@ var auth = function(req, res, next){
     next();
 };
 
-var PATH = playerConfig.PATH; // When comitting keep this empty.
+var PATH = playerConfig.PATH;
 var player, currSong;
 var playing = false;
 var paused = false;

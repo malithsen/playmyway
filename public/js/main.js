@@ -258,5 +258,13 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
     console.log("Play previous");
   };
 
+  $scope.updateSongsList = function() {
+    $http.get('reload/').success(function() {
+      console.log('song list refreshed');
+    });
+  };
+
+  $scope.updateSongsList();
+
 }]);
 
