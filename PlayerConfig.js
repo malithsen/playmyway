@@ -1,7 +1,7 @@
 
 var playerConfig = {}
 
-playerConfig.PATH = '/home/hasa93/Songs';
+playerConfig.PATH = '';
 playerConfig.username = 'admin';
 playerConfig.password = 'admin';
 
