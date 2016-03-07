@@ -5,9 +5,9 @@ the classic, passive audience stepping to the beat of a single DJ. PlayMyWay
 allows you to become the DJ and the Dancer at the same time! Just connect
 to the app via Web or LAN and start voting the songs on the Playlist.
 
-![alt tag](https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/demo_playlist.png)
-![alt tag](https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/demo_admin.png)
-![alt tag](https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/mobile_demo.jpg)
+<img src="https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/demo_playlist.png" alt="alt tag" style="max-width: 75%;">
+<img src="https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/demo_admin.png" alt="alt tag" style="max-width: 75%;">
+<img src="https://raw.githubusercontent.com/malithsen/playmyway/master/screenshots/mobile_demo.jpg" alt="alt tag" style="max-width: 75%;">
 
 Installation
 ============
