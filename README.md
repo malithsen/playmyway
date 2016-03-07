@@ -1,29 +1,22 @@
-PlayMyWay provides a way to create playlists based on votes. Currently it is work in progress and far from usable.
+PlayMyWay is a web player aimed at providing a fully flexible and dynamic
+playlist ordering based on user voting. It would allow the users to become
+part of a more exciting and active Dance Floor experience rather than being
+the classic, passive audience stepping to the beat of a single DJ. PlayMyWay
+allows you to become the DJ and the Dancer at the same time! Just connect
+to the app via Web or LAN and start voting the songs on the Playlist.
 
-## Development
+Installation
+============
 
-`npm install`
+1. Clone the repo using `git clone` 
+2. Navigate into the project folder using `cd playmyway`
+3. Run an `npm install` to get the dependencies
+4. Run `mongod` to start mongodb service
+5. Issue `npm start` to run the app (default port is localhost:8080)
 
-change PATH variable in server.js to point to your songs directory
+Note: Debian/Ubuntu users would need to install ALSA headers if not already installed: `sudo apt-get install libasound2-dev`
 
-for Debian/Ubuntu users install ALSA headers if not already installed:
-sudo apt-get install libasound2-dev
-
-#### What needs to be done
-
-##### immediately
-
-###### Frontend
-* ~~Add styles~~
-* ~~Add a button to vote up (Currently clicking on 'vote up' text works)~~
-* Highlight the song currently being played
-* Design another view for the admin. This should give the ability to control the player (play, pause, stop etc)
-* Limit access to admin view (password maybe?)
-
-###### Backend
-* ~~Sort songs by votes. If multiple songs have the same votes, song last voted should be the last~~
-* Change songs directory, better if we can add multiple directories and individual songs.
-* ~~Automatically move to the next song in the playlist once the current one is over.~~
-
-##### Not so immediately
-Well let's save that for later :P
+Configuration
+=============
+1. Change the path to point the songs directory 
+2. Set credentials for admin user 
