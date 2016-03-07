@@ -16,7 +16,10 @@ Installation
 
 Note: Debian/Ubuntu users would need to install ALSA headers if not already installed: `sudo apt-get install libasound2-dev`
 
-Configuration
+Configuration 
 =============
-1. Change the path to point the songs directory 
-2. Set credentials for admin user 
+
+All configurations could be made in PlayerConfig
+
+1. Change the PATH to point to the songs directory
+2. Set credentials for admin 
