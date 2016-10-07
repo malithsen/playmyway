@@ -16,7 +16,6 @@ var express = require('express'),
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log(username, password)
     if (username === playerConfig.username && password === playerConfig.password)
       return done(null, {name: "admin"});
 
@@ -56,10 +55,8 @@ var http = http.Server(app);
 var io = Socket(http);
 
 io.on('connection', function(socket){
-  console.log("New connection...");
 
   socket.on('voteup', function(msg){
-    console.log("Voted up!");
     io.emit('refreshList');
   });
 
@@ -94,7 +91,6 @@ var updatePlayList = function(){
               .on('playing', function(song){
                 playing = true;
                 paused = false;
-                console.log(song);
                 io.emit('songChanged', song);
                 mongocon.resetVotes(song.src);
                 currSong = song;
@@ -102,8 +98,6 @@ var updatePlayList = function(){
              .on('error', function(err){
                playing = false;
                paused = false;
-               console.log("Pfft!");
-               console.log(err);
                updatePlayList();
               })
              .play();
@@ -140,7 +134,6 @@ app.get('/upvote/:id', function(req, res) {
 });
 
 app.get('/play', auth, function(req, res) {
-  console.log("playing");
 
   //stop an already plaing item
   if(typeof player != "undefined")
@@ -154,7 +147,6 @@ app.get('/play', auth, function(req, res) {
 });
 
 app.get('/next', auth, function(req, res){
-  console.log('Switching to the next song...');
 
   if(typeof player === "undefined")
   {
@@ -170,7 +162,6 @@ app.get('/next', auth, function(req, res){
 });
 
 app.get('/stop', auth, function(req, res){
-  console.log('Stopping current song...')
   player.stop();
   playing = false;
   paused = false;
@@ -188,14 +179,11 @@ app.get('/pause', auth, function(req, res){
 });
 
 app.get('/reload', auth, function(req, res) {
-  console.log("Reload");
-  console.log(PATH);
   fs.readdir(PATH, function(err, items) {
     res.json(items);
 
     for (var i=0; i<items.length; i++) {
       if (path.extname(items[i]) === '.mp3') {
-        console.log(items[i]);
         var songpath = PATH+items[i];
         mongocon.saveSong(songpath, items[i], function(){console.log("callback fn");});
       };
@@ -204,7 +192,6 @@ app.get('/reload', auth, function(req, res) {
 });
 
 app.get('/save', auth, function(req, res){
-  console.log("save song");
   mongocon.saveSong('test.mp3');
 });
 
@@ -215,7 +202,6 @@ app.get('/loggedin', function(req, res) {
 
 // route to log in
 app.post('/login', passport.authenticate('local'), function(req, res) {
-  console.log(req);
   res.send(req.user);
 });
 
@@ -230,7 +216,6 @@ app.get('/views/:v', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-  console.log("calling layout");
   res.render('layout', {
     title: 'PlayMyWay',
     env: process.env.NODE_ENV

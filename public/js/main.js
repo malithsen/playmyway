@@ -72,8 +72,6 @@ qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpP
 
   // Register the login() function
   $scope.login = function(){
-    console.log("loging in");
-    console.log($scope.user);
 
     $http({
       url: '/login',
@@ -85,7 +83,6 @@ qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpP
     })
     .success(function(user){
       // No error: authentication OK
-      console.log(user);
       $state.go('admin');
     })
     .error(function(){
@@ -96,7 +93,6 @@ qApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state', '$httpP
 
 qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpLoadingBar', function($scope, $rootScope, $http, $interval, cfpLoadingBar) {
 
-  console.log("Root ctrl");
   var duration;
   var progress;
   var timer;
@@ -120,7 +116,6 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
     duration = song.meta.duration;
 
     $scope.loadSongs();
-    console.log("Song changes", song);
     $rootScope.currSong = song;
     $scope.startTimer(duration);
 
@@ -130,14 +125,12 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
 
     if(ind > -1){
       recentlyVoted.splice(ind, 1);
-      console.log(recentlyVoted);
       localStorage.setItem("recentlyVoted", JSON.stringify(recentlyVoted));
     }
 
   });
 
   $scope.startTimer = function(duration) {
-    console.log("duration", duration);
     // stops any running interval to avoid two intervals running at the same time
     $scope.stopTimer();
     timer = 0
@@ -170,7 +163,6 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
 
   $scope.voteup = function(id) {
     $http.get('upvote/' + id).success(function(data) {
-      console.log(data);
       $scope.socket.emit('voteup','');
     });
   };
@@ -178,12 +170,10 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   $scope.pushVoted = function(song){
     
     var recentlyVoted = JSON.parse(localStorage.getItem("recentlyVoted"));
-    console.log(recentlyVoted);
 
     if(recentlyVoted.indexOf(song.name) < 0){
       
       $http.get('upvote/' + song._id).success(function(data) {
-        console.log(data);
         recentlyVoted.push(song.name);
         $scope.socket.emit('voteup', data);
         localStorage.setItem("recentlyVoted", JSON.stringify(recentlyVoted));
@@ -199,8 +189,6 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
 
 qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
 
-  console.log("Admin ctrl");
-
   $scope.socket = io();
   $scope.volume = 100;
 
@@ -212,14 +200,12 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
   $scope.getPlayerState = function() {
     $http.get('/api/playing').success(function(data) {
       $rootScope.player.playing = data['playerState'];
-      console.log($rootScope.player.playing);
     });
   };
 
   $scope.getPausedState = function() {
     $http.get('/api/paused').success(function(data) {
       $rootScope.player.paused = data['pausedState'];
-      console.log($rootScope.player.paused);
     });
   };
 
@@ -229,13 +215,11 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
   $scope.play = function(){
     if ($rootScope.player.paused === true) {
       $http.get('/pause').success(function(data) {
-        console.log("Unpaused");
         $rootScope.player.playing = true;
         $rootScope.player.paused = false;
       });
     } else {
       $http.get('/play').success(function(data) {
-        console.log("Playing");
         $rootScope.player.playing = true;
       });
     }
@@ -243,7 +227,6 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   $scope.pause = function(){
     $http.get('/pause').success(function(data) {
-      console.log("Paused");
       $rootScope.player.playing = false;
       $rootScope.player.paused = true;
       window.clearInterval($rootScope.timerId);
@@ -252,7 +235,6 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   $scope.next = function(){
     $http.get('/next').success(function(data) {
-      console.log("Next song");
       $rootScope.player.playing = true;
       $rootScope.player.paused = false;
     });
@@ -268,7 +250,6 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   $scope.updateSongsList = function() {
     $http.get('reload/').success(function() {
-      console.log('song list refreshed');
     });
   };
 
