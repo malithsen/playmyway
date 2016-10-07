@@ -101,6 +101,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   var progress;
   var timer;
   var timerId;
+  $rootScope.currSong = '';
 
   cfpLoadingBar.start();
   cfpLoadingBar.set(0); // Hide progress bar at the beginning
@@ -161,6 +162,12 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
     });
   };
 
+  $scope.getCurrent = function() {
+    $http.get('/api/current/').success(function(data) {
+      $rootScope.currSong = data.current;
+    });
+  };
+
   $scope.voteup = function(id) {
     $http.get('upvote/' + id).success(function(data) {
       console.log(data);
@@ -186,6 +193,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
   }
 
   $scope.loadSongs();
+  $scope.getCurrent();
 
 }]);
 

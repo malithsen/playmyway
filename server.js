@@ -118,6 +118,10 @@ app.get('/api/paused', function(req, res) {
   return res.json({ pausedState: paused});
 });
 
+app.get('/api/current', function(req, res) {
+  return res.json({ current: currSong});
+});
+
 app.get('/songs', function(req, res) {
   var cb = function(err, data) {
     if (err) {
@@ -185,6 +189,7 @@ app.get('/pause', auth, function(req, res){
 
 app.get('/reload', auth, function(req, res) {
   console.log("Reload");
+  console.log(PATH);
   fs.readdir(PATH, function(err, items) {
     res.json(items);
 
