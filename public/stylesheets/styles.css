@@ -1,5 +1,6 @@
-
-
+.brand-logo {
+  padding-left: 10px!important;
+}
 
 .vote-btn {
   float: right;
@@ -121,5 +122,4 @@ nav button.next:hover {
   background: url('/images/backdrop.png');
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 20vh;
 }
