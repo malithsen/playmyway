@@ -116,3 +116,10 @@ nav button.next:hover {
     width: 80%;
   }
 }
+
+.banner{
+  background: url('/images/backdrop.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 20vh;
+}
