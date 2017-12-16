@@ -191,11 +191,74 @@ qApp.controller('AdminCtrl', ['$scope', '$rootScope', '$http', function($scope, 
 
   $scope.socket = io();
   $scope.volume = 100;
+  var player   = document.getElementById('ap');
+  var volumeBar      = player.querySelector('.volume__bar');
+  var seekingVol = false;
+  var rightClick = false;
 
   $rootScope.player = {
     playing: false,
-    paused: false
+    paused: false,
+    seekingVol: false,
+    rightClick: false
   };
+
+  volumeBar.closest('.volume').addEventListener('mousedown', handlerVol, false);
+  volumeBar.closest('.volume').addEventListener('mousemove', setVolume);
+    // volumeBar.closest('.volume').addEventListener(wheel(), setVolume, false);
+
+  function wheel() {
+    var wheel;
+    if ('onwheel' in document) {
+      wheel = 'wheel';
+    } else if ('onmousewheel' in document) {
+      wheel = 'mousewheel';
+    } else {
+      wheel = 'MozMousePixelScroll';
+    }
+    return wheel;
+  }
+
+  function moveBar(evt, el, dir) {
+    var value;
+    if(dir === 'horizontal') {
+      value = Math.round( ((evt.clientX - $(el).offset().left) + window.pageXOffset)  * 100 / $(el).parentNode.offsetWidth);
+      $(el).style.width = value + '%';
+      return value;
+    }
+    else {
+      if(evt.type === wheel()) {
+        value = parseInt(volumeLength, 10);
+        var delta = evt.deltaY || evt.detail || -evt.wheelDelta;
+        value = (delta > 0) ? value - 10 : value + 10;
+      }
+      else {
+        console.log($(el).offset(), $(el).outerHeight());
+        var offset = ($(el).offset().top + $(el).outerHeight()) - window.pageYOffset;
+        value = Math.round((offset - evt.clientY));
+      }
+      if(value > 100) value = wheelVolumeValue = 100;
+      if(value < 0) value = wheelVolumeValue = 0;
+      volumeBar.style.height = value + '%';
+      return value;
+    }
+  }
+
+  function handlerVol(evt) {
+    $rootScope.player.rightClick = (evt.which === 3) ? true : false;
+    $rootScope.player.seekingVol = true;
+    setVolume(evt);
+  }
+
+  function setVolume(evt) {
+    evt.preventDefault();
+    if($rootScope.player.seekingVol && $rootScope.player.rightClick === false || evt.type === wheel()) {
+      var value = moveBar(evt, volumeBar.parentNode, 'vertical') / 100;
+      console.log("value", value);
+      $scope.socket.emit('changeVol', value);
+    }
+  }
+
 
   $scope.getPlayerState = function() {
     $http.get('/api/playing').success(function(data) {
