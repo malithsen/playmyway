@@ -140,6 +140,7 @@ qApp.controller('RootCtrl', ['$scope', '$rootScope', '$http', '$interval', 'cfpL
       if (!$rootScope.player.paused){
         timer++;
         progress = timer/duration;
+        console.log(progress);
         cfpLoadingBar.set(progress);
       };
     }, 1000);
